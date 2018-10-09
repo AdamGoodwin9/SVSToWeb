@@ -1,0 +1,38 @@
+<html>
+    <div id="viewdiv" style="width: 800px; height: 1000px;"></div>
+
+    <script src="openseadragon/openseadragon.min.js"></script>
+
+    <script type="text/javascript">
+        var dziFilesPath = 'CMU-1-Small-Region_files/';
+        var dziData = '<?xml version="1.0" encoding="UTF-8"?><Image xmlns="http://schemas.microsoft.com/deepzoom/2008"Format="jpeg"Overlap="1" TileSize="256"><Size Height="2967" Width="2220"/></Image>';
+
+        var tileSourceFromData = function(data, filesUrl) {
+            var $xml = $($.parseXML(data));
+            var $image = $xml.find('Image');
+            var $size = $xml.find('Size');
+            var dzi = {
+                Image: {
+                    xmlns: $image.attr('xmlns'),
+                    Url: filesUrl,
+                    Format: $image.attr('Format'),
+                    Overlap: $image.attr('Overlap'),
+                    TileSize: $image.attr('TileSize'),
+                    Size: {
+                        Height: $size.attr('Height'),
+                        Width: $size.attr('Width')
+                    }
+                }
+            };
+            return dzi;
+        };
+
+        var viewer = OpenSeadragon({
+            id: 'viewdiv',
+            prefixUrl: 'openseadragon/images/',
+            tileSources: 'CMU-1-Small-Region.dzi'
+            //tileSources: tileSourceFromData(dziData, dziFilesPath)
+        });
+
+    </script>
+</html>
